@@ -9,7 +9,7 @@ API desenvolvida utilizando Java, Maven, Spring Boot, Spring JPA e Banco de dado
 Na raiz do projeto executar:
 
 ```sh
-nvmw spring-boot:run
+mvnw spring-boot:run
 ```
 
 ## Como testar
@@ -17,7 +17,7 @@ nvmw spring-boot:run
 Para executar os testes:
 
 ```sh
-nvmw test
+mvnw test
 ```
 
 Os testes da collection do postman podem ser executados por linha de comando utilizando o newman ou pelo runner  da ferramenta postman:
