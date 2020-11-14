@@ -1,0 +1,962 @@
+{
+	"info": {
+		"_postman_id": "e375460c-acef-4809-aaac-8288d2c03cd5",
+		"name": "DesafioInter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Requests",
+			"item": [
+				{
+					"name": "CreateUser - Valid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "071ac1a1-aa7c-4b7f-a970-6b635bb2b115",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).not.null;\r",
+									"    pm.expect(jsonData.name).equal(\"Teste\");\r",
+									"    pm.expect(jsonData.email).equal(\"valid@email.com\");\r",
+									"    pm.expect(jsonData.singleDigits).to.be.an('array'); \r",
+									"    pm.collectionVariables.set(\"user_id\", jsonData.id);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Teste\",\r\n    \"email\": \"valid@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUser - Invalid request error",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "43a43170-bd66-466a-8655-a43998489a05",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(400);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist;\r",
+									"    pm.expect(jsonData.fields).to.be.an('array').is.not.empty; \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Teste\",\r\n    \"email\": \"invalidemail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser - Valid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4412ac7e-003e-4b00-af63-5473f4b7d54a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).exist;\r",
+									"    pm.expect(jsonData.name).equal(\"Another Name\");\r",
+									"    pm.expect(jsonData.email).equal(\"another@email.com\");\r",
+									"    pm.expect(jsonData.singleDigits).to.be.an('array'); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Another Name\",\r\n    \"email\": \"another@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/{{user_id}}",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser - Invalid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38f50aa2-6408-48d2-b679-5060363c679b",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(400);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist;\r",
+									"    pm.expect(jsonData.fields).to.be.an('array').is.not.empty; \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Another Name\",\r\n    \"email\": \"anotheremail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/1",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser - Invalid User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e1f0c26e-3683-418a-8280-b69aa4d7049d",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(404);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist.equal(\"Usuario não encontrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Another Name\",\r\n    \"email\": \"another@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/9891",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"9891"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListAllUsers - Valid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "73ca96cd-0319-4640-a33b-18236a51b17a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"     pm.expect(jsonData).to.be.an('array').is.not.empty;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListUser - Valid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d54fdb9-5c21-4957-86c9-3e9440b1bb9e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).not.null;\r",
+									"    pm.expect(jsonData.name).exist;\r",
+									"    pm.expect(jsonData.email).exist;\r",
+									"    pm.expect(jsonData.singleDigits).to.be.an('array'); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/{{user_id}}",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListUser - Invalid User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2bdc7b52-cfc3-4c40-b773-91bd490b7da2",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(404);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist.equal(\"Usuario não encontrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/9891",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"9891"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSingleDigit - Valid Request with valid UserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e8daffd6-90ab-462f-ad0e-743955adaa25",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.number).equal(\"9875\");\r",
+									"    pm.expect(jsonData.multiplier).equal(4);\r",
+									"    pm.expect(jsonData.result).equal(8);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": \"9875\",\r\n    \"multiplier\": 4\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits?user_id={{user_id}}",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List - UserSingleDigit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a3589ef8-0b8e-47c6-8e3c-c4211cce71f3",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits/user/{{user_id}}",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits",
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser - Valid User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb2f5116-adaa-4e1e-a7af-33666abf8900",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.expect(pm.response.body).is.undefined;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/{{user_id}}",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser - Invalid User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1f92d03a-aa6f-4f72-a995-60da55ed389d",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(404);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist.equal(\"Usuario não encontrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/users/9891",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"users",
+								"9891"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSingleDigit - Valid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "edb8d78f-3706-4c82-a0df-5ca5656308af",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.number).equal(\"9875\");\r",
+									"    pm.expect(jsonData.result).equal(2);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"number\": \"9875\"}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSingleDigit - Valid Request with multiplier",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f80fddc-41cf-448b-a62a-91644b203d06",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.number).equal(\"9875\");\r",
+									"    pm.expect(jsonData.multiplier).equal(4);\r",
+									"    pm.expect(jsonData.result).equal(8);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": \"9875\",\r\n    \"multiplier\": 4\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSingleDigit - Valid Request with invalid UserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aad873a5-a87e-4ee9-806e-a0715fda1cbf",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(404);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist.equal(\"Usuario não encontrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"number\": \"9875\",\r\n    \"multiplier\": 4\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits?user_id=9875",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "9875"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSingleDigit - Invalid Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "854c6b09-c80e-45ed-a9ba-42c0ea69c622",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(400);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist;\r",
+									"    pm.expect(jsonData.fields).to.be.an('array').is.not.empty; \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"multiplier\": 4\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "9875",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List - UserSingleDigit - invalid UserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ff3eecae-939d-4fd2-b00d-263bb350b16b",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error response is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.status).equal(404);\r",
+									"    pm.expect(jsonData.date).exist;\r",
+									"    pm.expect(jsonData.message).exist.equal(\"Usuario não encontrado\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_api}}/{{context_path}}/single-digits/user/9875",
+							"host": [
+								"{{url_api}}"
+							],
+							"path": [
+								"{{context_path}}",
+								"single-digits",
+								"user",
+								"9875"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6d4c53ba-23cc-4b5e-9260-cea9004248d9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a5116e62-4272-43ce-8e9d-5c81c9efaca4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "e9a3367b-5813-48db-8f1f-bc797396bfb9",
+			"key": "url_api",
+			"value": "http://localhost:8080"
+		},
+		{
+			"id": "4b78c13d-a51c-43a1-baea-ba546693d4e2",
+			"key": "context_path",
+			"value": "desafio/v1"
+		},
+		{
+			"id": "5a827a23-9c6e-4a34-b3b5-f81c73e88953",
+			"key": "user_id",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
